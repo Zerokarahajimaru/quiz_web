@@ -12,7 +12,7 @@ class Filter_Admin implements FilterInterface
         public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
-        if($session->get('role') == 'pelajar'){
+        if($session->get('role') == 'public'){
             return redirect()->to('/');
         }
 

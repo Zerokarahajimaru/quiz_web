@@ -1,0 +1,25 @@
+<table>
+    <tr>
+        <th>nama</th>
+        <th>gelar</th>
+        <th>gelar</th>
+        <th>jabatan</th>
+        <th>status pernikahan</th>
+    </tr>
+    <?php if (count($mhs) > 0): ?>
+        <?php foreach($mhs as $row): ?>
+            <tr>
+                <?php $id_mhs_value=$row['id_mhs'] ?>
+                <td><?= htmlspecialchars($id_mhs_value); ?></td>
+                <td><?= htmlspecialchars($row['name']); ?></td>
+                <!-- nanti link nya di ubah -->
+                <td><a href="<?=base_url("mahasiswa/detail/".$id_mhs_value) ?>" >Detail</a></td>
+            </tr>
+        <?php endforeach;?>
+    <?php else: ?>
+        <tr> 
+            <td colspan="4">Data tidak ditemukan</td>
+        </tr>
+    <?php endif; ?>
+</table>
+<a href="/">back</a>
