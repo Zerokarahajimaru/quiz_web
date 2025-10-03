@@ -1,9 +1,11 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\Login;
 
 
-use App\Models\Login_Data;
+use App\Models\Pengguna\Login_Data;
 use App\Models\Pejabat;
+
+use App\Controllers\BaseController;
 
 class Post_User extends BaseController{
 
@@ -31,8 +33,7 @@ if ($form) {
 
     $storedHash = $form['password'];
 
-
-    if (password_verify($button_login['password_html'], $storedHash)) {
+    if (password_verify(     $button_login['password_html'] , $storedHash)) {
 
 
         $session = session();
@@ -60,9 +61,9 @@ if ($form) {
 
 
     public function return_status_role($role){
-        if($role == 'public')return 1;
+        if($role == 'Public')return 1;
         else 
-        if($role == 'admin') return 2;
+        if($role == 'Admin') return 2;
         else return 0;//nanti aku mau ngecrashin kalo unautorize :)
     }
 
@@ -74,7 +75,7 @@ if ($form) {
                 break;
             case 2:
                 // return view('Page_Admin_Dashboard');
-                return redirect()->to(base_url('/'));
+                return redirect()->to(base_url('admin'));
                 break;
             default:
                 // return view('Page_Mahasiswa_Dashboard');
