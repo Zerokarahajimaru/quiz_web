@@ -12,13 +12,11 @@ class Filter_User implements FilterInterface
         public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
-        if($session->get('role') == 'admin'){
+        if($session->get('role') == 'Admin'){
             return redirect()->to(base_url('/'));
         }
 
     }
-
-
 
         public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {

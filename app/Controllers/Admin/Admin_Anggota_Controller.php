@@ -142,41 +142,6 @@ public function update_komponen_gaji()
 
 
 
-public function insert_komponen_gaji()
-{
-    $model = new Komponen_Gaji_Data_Admin();
-
-    $data = $this->request->getPost();
-    unset($data['id_komponen_gaji']); // auto increment
-
-    if ($model->insert($data)) {
-        return $this->response->setJSON([
-            'status' => 'success',
-            'message' => 'Data baru berhasil ditambahkan!',
-            'data' => [
-                'id_komponen_gaji' => $model->getInsertID(),
-                'nama_komponen'    => $data['nama_komponen'],
-                'kategori'         => $data['kategori'],
-                'jabatan'          => $data['jabatan'],
-                'nominal'          => $data['nominal'],
-                'satuan'           => $data['satuan']
-            ]
-        ]);
-    } else {
-        return $this->response->setJSON([
-            'status' => 'error',
-            'message' => 'Gagal menambahkan data'
-        ])->setStatusCode(500);
-    }
-}
-
-
-
-
-
-
-
-
 
 
 

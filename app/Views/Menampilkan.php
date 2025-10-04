@@ -1,4 +1,8 @@
+
+
 <!DOCTYPE html>
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,6 +39,9 @@
     </style>
 </head>
 <body>
+
+
+
     <div class="container py-5">
 
         <!-- Table Anggota -->
@@ -60,7 +67,7 @@
                     </tbody>
                 </table>
             </div>
-            <a href="/" class="back-btn btn btn-secondary">Back</a>
+          
         </div>
 
         <!-- Table Penggajian -->
@@ -90,7 +97,7 @@
                     </tbody>
                 </table>
             </div>
-            <a href="/" class="back-btn btn btn-secondary">Back</a>
+           
         </div>
 
         <!-- Table Komponen Gaji -->
@@ -120,7 +127,7 @@
                     </tbody>
                 </table>
             </div>
-            <a href="/" class="back-btn btn btn-secondary">Back</a>
+
         </div>
 
     </div>
