@@ -22,9 +22,11 @@
 <h2>table penggajian</h2>
 <table>
     <tr>
-        <th>Nim</th>
-        <th>Nama</th>
-        <th>aksi</th>
+        <th>nama</th>
+        <th>jabatan</th>
+        <th>kategori</th>
+        <th>nominal</th>
+        <th>diberikan setiap</th>
     </tr>
         <?php foreach($penggajian as $row): ?>
             <tr>
