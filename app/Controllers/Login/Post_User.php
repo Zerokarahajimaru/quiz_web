@@ -2,10 +2,12 @@
 namespace App\Controllers\Login;
 
 
+use App\Models\Penggajian\Penggajian_Data;
 use App\Models\Pengguna\Login_Data;
-use App\Models\Pejabat;
+use App\Models\Anggota\Pejabat_Public;
 
 use App\Controllers\BaseController;
+use App\Models\Komponen_Gaji\Komponen_Gaji_Data_Public;
 
 class Post_User extends BaseController{
 
@@ -85,17 +87,26 @@ if ($form) {
     }
 
 
+
+
         public function public_user(){
-            return view('Test_User');
-        }
-
-
-
-        public function data_pejabat(){
-            $pejabat = new Pejabat();
+            $pejabat = new Pejabat_Public(); 
             $data['pejabat'] = $pejabat->findAll();
-
-
+           
+            
+            $model_komponen_gaji = new Komponen_Gaji_Data_Public();
+            $data['komponen_gaji_pejabat'] = $model_komponen_gaji->findAll();
+            
+            $model_gaji = new Penggajian_Data();
+            $data['penggajian']=
+            $model_gaji->select('a.nama_depan,a.nama_belakang, a.gelar_depan, a.gelar_belakang, a.jabatan,kp.nama_komponen, kp.kategori, kp.nominal, kp.satuan')
+            ->from('penggajian p')
+            ->join('komponen_gaji kp', 'kp.id_komponen_gaji = p.id_komponen_gaji','left')
+            ->join('anggota a', 'a.id_anggota = p.id_anggota','left')
+            ->distinct()
+            ->findAll();
+            
+            
             return view('Menampilkan',$data);
         }
 }
