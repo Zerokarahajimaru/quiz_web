@@ -33,6 +33,31 @@ class Admin_Anggota_Controller extends BaseController{
     }
 
 
+public function update_pejabat()
+{
+    $model = new Pejabat_Admin();
+    $data = $this->request->getJSON(true);
+
+    $id = $data['id_anggota'] ?? null;
+
+    // pastikan id_anggota tidak ikut terupdate
+    unset($data['id_anggota']);  
+
+    if ($id && $model->update($id, $data)) {
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Data berhasil diupdate!'
+        ]);
+    } else {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Gagal update data'
+        ])->setStatusCode(500);
+    }
+}
+
+
+
 
 }
 ?>

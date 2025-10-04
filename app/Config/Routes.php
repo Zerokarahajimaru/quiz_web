@@ -13,4 +13,10 @@ $routes->get('public', 'Login\Post_User::public_user');
 $routes->get('admin', 'Admin\Admin_Anggota_Controller::admin_view_f');
 $routes->post('admin/anggota/delete/(:num)', 'Admin\Admin_Anggota_Controller::del_pejabat/$1');
 
+
+$routes->post('admin/anggota/update', 'Admin\Admin_Anggota_Controller::update_pejabat');
+
+
+
+
 ?>
