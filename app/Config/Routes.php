@@ -23,6 +23,7 @@ $routes->post('admin/komponen_gaji/update', 'Admin\Admin_Anggota_Controller::upd
 
 $routes->post('admin/komponen_gaji/delete/(:num)', 'Admin\Admin_Anggota_Controller::delete_komponen_gaji/$1');
 
+$routes->post('admin/komponen_gaji/insert', 'Admin\Admin_Anggota_Controller::insert_komponen_gaji');
 
 
 ?>

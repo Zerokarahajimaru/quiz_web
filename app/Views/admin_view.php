@@ -105,9 +105,11 @@
 
 
 
-
 <h2>Komponen Gaji</h2>
-<table border="1" cellpadding="5" cellspacing="0">
+<button id="insertBtnGaji">+ Tambah Komponen Gaji</button>
+<br><br>
+
+<table border="1" cellpadding="5" cellspacing="0" id="tableKomponenGaji">
     <tr>
         <th>Nama Tunjangan</th>
         <th>Kategori Tunjangan</th>
@@ -131,6 +133,31 @@
     <?php endforeach;?>
 </table>
 
+<!-- Modal Insert -->
+<div id="insertModalGaji" style="display:none; position:fixed; top:20%; left:30%; background:#fff; border:1px solid #ccc; padding:20px; z-index:1000;">
+    <h3>Tambah Komponen Gaji</h3>
+    <form id="insertFormGaji">
+        <label>Nama Komponen:</label><br>
+        <input type="text" name="nama_komponen" required><br><br>
+
+        <label>Kategori:</label><br>
+        <input type="text" name="kategori" required><br><br>
+
+        <label>Jabatan:</label><br>
+        <input type="text" name="jabatan" required><br><br>
+
+        <label>Nominal:</label><br>
+        <input type="number" name="nominal" required><br><br>
+
+        <label>Satuan:</label><br>
+        <input type="text" name="satuan" required><br><br>
+
+        <button type="submit">Simpan</button>
+        <button type="button" id="closeInsertModalGaji">Batal</button>
+    </form>
+</div>
+
+<!-- Modal Update -->
 <div id="updateModalGaji" style="display:none; position:fixed; top:20%; left:30%; background:#fff; border:1px solid #ccc; padding:20px; z-index:1000;">
     <h3>Update Komponen Gaji</h3>
     <form id="updateFormGaji">
@@ -159,11 +186,6 @@
 
 
 
-
-
-
-
-<a href="/">back</a>
 
 
 
@@ -254,7 +276,7 @@ document.getElementById("insertForm").addEventListener("submit", function(e) {
     .then(data => {
         alert(data.message || "Insert berhasil!");
         if (data.status === "success") {
-            location.reload(); // reload biar tabel update
+            location.reload(); 
         }
     })
     .catch(err => console.error(err));
@@ -330,6 +352,51 @@ document.getElementById("updateFormGaji").addEventListener("submit", function(e)
         alert(data.message);
         if (data.status === "success") {
             location.reload();
+        }
+    })
+    .catch(err => console.error(err));
+});
+
+
+
+// ================== INSERT ==================
+document.getElementById("insertBtnGaji").addEventListener("click", () => {
+    document.getElementById("insertModalGaji").style.display = "block";
+});
+document.getElementById("closeInsertModalGaji").addEventListener("click", () => {
+    document.getElementById("insertModalGaji").style.display = "none";
+});
+
+document.getElementById("insertFormGaji").addEventListener("submit", function(e) {
+    e.preventDefault();
+    let formData = new FormData(this);
+
+    fetch("/admin/komponen_gaji/insert", {
+        method: "POST",
+        body: formData,
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+        if (data.status === "success") {
+            let tbody = document.querySelector("#tableKomponenGaji");
+            let newRow = document.createElement("tr");
+            newRow.setAttribute("data-id", data.data.id_komponen_gaji);
+            newRow.innerHTML = `
+                <td>${data.data.nama_komponen}</td>
+                <td>${data.data.kategori}</td>
+                <td>${data.data.jabatan}</td>
+                <td>${data.data.nominal}</td>
+                <td>${data.data.satuan}</td>
+                <td>
+                    <button class="updateBtnGaji">Update</button>
+                    <button class="deleteBtnGaji">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(newRow);
+            this.reset();
+            document.getElementById("insertModalGaji").style.display = "none";
         }
     })
     .catch(err => console.error(err));
