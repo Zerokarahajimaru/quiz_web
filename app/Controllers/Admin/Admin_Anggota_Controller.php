@@ -59,5 +59,29 @@ public function update_pejabat()
 
 
 
+public function insert_pejabat()
+{
+    $model = new Pejabat_Admin();
+    $data = $this->request->getJSON(true);
+
+    // id_anggota auto increment → tidak dimasukkan
+    unset($data['id_anggota']);
+    // $data['id_anggota'] = 911;
+    if ($model->insert($data)) {
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Data baru berhasil ditambahkan!'
+        ]);
+    } else {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Gagal menambahkan data'
+        ])->setStatusCode(500);
+    }
+}
+
+
+
+
 }
 ?>

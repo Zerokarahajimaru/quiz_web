@@ -11,6 +11,21 @@
     <th>status_pernikahan</th>
 </tr>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?php foreach($pejabat as $row): ?>
 <tr data-id="<?= $row['id_anggota'] ?>"> 
     <td>
@@ -23,6 +38,21 @@
         <button class="updateBtn">Update</button>
     </td>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     <!-- id_anggota tampil tapi gak bisa diedit -->
     <td><?= htmlspecialchars($row['id_anggota']); ?></td>  
 
@@ -36,6 +66,55 @@
 <?php endforeach;?>
 
 </table>
+
+
+
+<!-- Tombol Insert -->
+<button id="insertBtn">Insert</button>
+
+<!-- Popup Modal Insert -->
+<div id="insertModal" style="display:none; position:fixed; top:20%; left:30%; background:#fff; border:1px solid #ccc; padding:20px; z-index:1000;">
+    <h3>Insert Pejabat</h3>
+    <form id="insertForm">
+        <label>Nama Depan:</label><br>
+        <input type="text" name="nama_depan" required><br><br>
+
+        <label>Nama Belakang:</label><br>
+        <input type="text" name="nama_belakang" required><br><br>
+
+        <label>Gelar Depan:</label><br>
+        <input type="text" name="gelar_depan"><br><br>
+
+        <label>Gelar Belakang:</label><br>
+        <input type="text" name="gelar_belakang"><br><br>
+
+        <label>Jabatan:</label><br>
+        <input type="text" name="jabatan" required><br><br>
+
+        <label>Status Pernikahan:</label><br>
+        <input type="text" name="status_pernikahan"><br><br>
+
+        <button type="submit">Simpan</button>
+        <button type="button" id="closeModal">Batal</button>
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <a href="/">back</a>
 
 
@@ -96,6 +175,42 @@ document.querySelectorAll(".updateBtn").forEach(btn => {
     });
 });
 
+
+//untuk inser pejabat
+
+document.getElementById("insertBtn").addEventListener("click", () => {
+    document.getElementById("insertModal").style.display = "block";
+});
+
+document.getElementById("closeModal").addEventListener("click", () => {
+    document.getElementById("insertModal").style.display = "none";
+});
+
+document.getElementById("insertForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let formData = {};
+    new FormData(this).forEach((value, key) => {
+        formData[key] = value.trim();
+    });
+
+    fetch(`/admin/anggota/insert`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest"
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message || "Insert berhasil!");
+        if (data.status === "success") {
+            location.reload(); // reload biar tabel update
+        }
+    })
+    .catch(err => console.error(err));
+});
 
 
 

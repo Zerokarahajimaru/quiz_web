@@ -17,6 +17,7 @@ $routes->post('admin/anggota/delete/(:num)', 'Admin\Admin_Anggota_Controller::de
 $routes->post('admin/anggota/update', 'Admin\Admin_Anggota_Controller::update_pejabat');
 
 
+$routes->post('admin/anggota/insert', 'Admin\Admin_Anggota_Controller::insert_pejabat');
 
 
 ?>
