@@ -7,7 +7,8 @@ use App\Models\Pengguna\Login_Data;
 use App\Models\Anggota\Pejabat_Admin;
 
 use App\Controllers\BaseController;
-use App\Models\Komponen_Gaji\Komponen_Gaji_Data_Public;
+use App\Models\Komponen_Gaji\Komponen_Gaji_Data_Admin;
+
 
 
 class Admin_Anggota_Controller extends BaseController{
@@ -15,7 +16,11 @@ class Admin_Anggota_Controller extends BaseController{
     public function admin_view_f(){
             $model_pejabat = new Pejabat_Admin(); 
             $data['pejabat'] = $model_pejabat->findAll();
-
+            
+            
+            $mode_komponen_gaji = new Komponen_Gaji_Data_Admin();
+            $data['komponen_gaji_pejabat'] = $mode_komponen_gaji->findAll();
+            
             
         return view('admin_view',$data);
     }
@@ -79,6 +84,65 @@ public function insert_pejabat()
         ])->setStatusCode(500);
     }
 }
+
+
+
+
+// DELETE Komponen Gaji
+public function delete_komponen_gaji($id = null)
+{
+    $model = new Komponen_Gaji_Data_Admin();
+
+    if (!$id) {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'ID komponen gaji tidak ditemukan'
+        ])->setStatusCode(400);
+    }
+
+    // Pakai where agar eksplisit sesuai permintaanmu
+    $deleted = $model->where('id_komponen_gaji', $id)->delete();
+
+    if ($deleted) {
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Data berhasil dihapus'
+        ]);
+    } else {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Gagal menghapus data'
+        ])->setStatusCode(500);
+    }
+}
+
+// UPDATE
+public function update_komponen_gaji()
+{
+    $model = new Komponen_Gaji_Data_Admin();
+    $data = $this->request->getJSON(true);
+
+    $id = $data['id_komponen'];
+    unset($data['id_komponen']); // jangan overwrite id
+
+    if ($model->update($id, $data)) {
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Data berhasil diupdate'
+        ]);
+    } else {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Gagal mengupdate data'
+        ])->setStatusCode(500);
+    }
+}
+
+
+
+
+
+
 
 
 

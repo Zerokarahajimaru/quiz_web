@@ -106,7 +106,55 @@
 
 
 
+<h2>Komponen Gaji</h2>
+<table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+        <th>Nama Tunjangan</th>
+        <th>Kategori Tunjangan</th>
+        <th>Jabatan yang Berhak Menerima</th>
+        <th>Nominal</th>
+        <th>Waktu Tunjangan</th>
+        <th>Aksi</th>
+    </tr>
+    <?php foreach($komponen_gaji_pejabat as $row): ?>
+        <tr data-id="<?= $row['id_komponen_gaji']; ?>">
+            <td><?= htmlspecialchars($row['nama_komponen']); ?></td>
+            <td><?= htmlspecialchars($row['kategori']); ?></td>
+            <td><?= htmlspecialchars($row['jabatan']); ?></td>
+            <td><?= htmlspecialchars($row['nominal']); ?></td>
+            <td><?= htmlspecialchars($row['satuan']); ?></td>
+            <td>
+                <button class="updateBtnGaji">Update</button>
+                <button class="deleteBtnGaji">Delete</button>
+            </td>
+        </tr>
+    <?php endforeach;?>
+</table>
 
+<div id="updateModalGaji" style="display:none; position:fixed; top:20%; left:30%; background:#fff; border:1px solid #ccc; padding:20px; z-index:1000;">
+    <h3>Update Komponen Gaji</h3>
+    <form id="updateFormGaji">
+        <input type="hidden" name="id_komponen">
+
+        <label>Nama Komponen:</label><br>
+        <input type="text" name="nama_komponen" required><br><br>
+
+        <label>Kategori:</label><br>
+        <input type="text" name="kategori" required><br><br>
+
+        <label>Jabatan:</label><br>
+        <input type="text" name="jabatan" required><br><br>
+
+        <label>Nominal:</label><br>
+        <input type="number" name="nominal" required><br><br>
+
+        <label>Satuan:</label><br>
+        <input type="text" name="satuan" required><br><br>
+
+        <button type="submit">Simpan Perubahan</button>
+        <button type="button" id="closeUpdateModalGaji">Batal</button>
+    </form>
+</div>
 
 
 
@@ -212,6 +260,80 @@ document.getElementById("insertForm").addEventListener("submit", function(e) {
     .catch(err => console.error(err));
 });
 
+
+//delete
+document.querySelectorAll(".deleteBtnGaji").forEach(btn => {
+    btn.addEventListener("click", function () {
+        let row = this.closest("tr");
+        let id = row.getAttribute("data-id");
+
+        if (confirm("Yakin mau hapus data ini?")) {
+            fetch(`/admin/komponen_gaji/delete/${id}`, {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message || "Berhasil dihapus!");
+                if (data.status === "success") {
+                    row.remove(); // langsung hapus row dari tabel
+                }
+            })
+            .catch(err => console.error(err));
+        }
+    });
+});
+
+// UPDATE (open modal with data)
+document.querySelectorAll(".updateBtnGaji").forEach(btn => {
+    btn.addEventListener("click", function() {
+        let row = this.closest("tr");
+        let id = row.getAttribute("data-id");
+        let cells = row.querySelectorAll("td");
+
+        let form = document.querySelector("#updateFormGaji");
+        form.id_komponen.value   = id;
+        form.nama_komponen.value = cells[0].textContent.trim();
+        form.kategori.value      = cells[1].textContent.trim();
+        form.jabatan.value       = cells[2].textContent.trim();
+        form.nominal.value       = cells[3].textContent.trim();
+        form.satuan.value        = cells[4].textContent.trim();
+
+        document.getElementById("updateModalGaji").style.display = "block";
+    });
+});
+
+document.getElementById("closeUpdateModalGaji").addEventListener("click", () => {
+    document.getElementById("updateModalGaji").style.display = "none";
+});
+
+// SUBMIT UPDATE
+document.getElementById("updateFormGaji").addEventListener("submit", function(e) {
+    e.preventDefault();
+    let formData = {};
+    new FormData(this).forEach((value, key) => {
+        formData[key] = value.trim();
+    });
+
+    fetch("/admin/komponen_gaji/update", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest"
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+        if (data.status === "success") {
+            location.reload();
+        }
+    })
+    .catch(err => console.error(err));
+});
 
 
 </script>

@@ -19,5 +19,10 @@ $routes->post('admin/anggota/update', 'Admin\Admin_Anggota_Controller::update_pe
 
 $routes->post('admin/anggota/insert', 'Admin\Admin_Anggota_Controller::insert_pejabat');
 
+$routes->post('admin/komponen_gaji/update', 'Admin\Admin_Anggota_Controller::update_komponen_gaji');
+
+$routes->post('admin/komponen_gaji/delete/(:num)', 'Admin\Admin_Anggota_Controller::delete_komponen_gaji/$1');
+
+
 
 ?>
